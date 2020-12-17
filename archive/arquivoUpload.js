@@ -6,20 +6,24 @@ module.exports = (caminho, nomeArquivo, callbackImagemCriada) => {
 
     const tipo = path.extname(caminho);
     const tipoValidos = ['jpg', 'jpeg', 'png'];
-    const valido = tipoValidos.indexOf(tipo.substring(1));
+    const valido = tipoValidos.indexOf(tipo.substring(1)) !== -1;
 
-    if (valido == -1) {
-        console.log('extensão não disponível')
-    }
-    else {
-        
+    if (valido) {
         const novoCaminho = `./asset/img/${nomeArquivo}${tipo}`;
 
         fs.createReadStream(caminho)
             .pipe(fs.createWriteStream(novoCaminho))
-            .on('finish', () => callbackImagemCriada(novoCaminho))
+            .on('finish', () => callbackImagemCriada(false, novoCaminho))
 
         console.log('salvo com sucesso');
+        
+    }
+    else {
+        const erro = 'extensão não disponível';
+        
+        console.log('extensão não disponível');
+
+        callbackImagemCriada(erro);
     }
 
 
