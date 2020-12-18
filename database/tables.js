@@ -29,6 +29,7 @@ class Tables {
             else{
                 console.log('Tabela PETS criada com sucesso!');
             }
+            
         });
     }
 
