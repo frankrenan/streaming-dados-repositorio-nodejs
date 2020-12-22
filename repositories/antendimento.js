@@ -1,4 +1,5 @@
 const query = require('../database/queries')
+const moment = require('moment');
 
 class Atendimento {
     adiciona(atendimento) {
@@ -18,6 +19,22 @@ class Atendimento {
         const sql = `SELECT * FROM atendimentos WHERE id = ${id}`;
 
         return query(sql, id);
+    }
+
+    altera(id, valores) {
+        if (valores.data) {
+            valores.data = moment(valores.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS')
+        }
+
+        const sql = 'UPDATE atendimentos SET ? WHERE id=?'
+
+        return query(sql, [valores, id]);
+    }
+
+    exclui (id) {
+        const sql = 'DELETE FROM atendimentos WHERE id=?'
+
+        return query(sql, id)
     }
 }
 

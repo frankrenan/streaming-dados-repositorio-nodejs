@@ -64,42 +64,19 @@ class Atendimento {
     }
 
     lista() {
-        return repositorio.lista();
+        return repositorio.lista()
     }
 
     buscaId(id) {
-        return repositorio.buscaId(id);
+        return repositorio.buscaId(id)
     }
 
-    altera(id, valores, res) {
-
-        if (valores.data) {
-            valores.data = moment(valores.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS');
-        }
-
-        const sql = 'UPDATE atendimentos SET ? WHERE id=?';
-
-        conexao.query(sql, [valores, id], (erro, resultados) => {
-            if (erro) {
-                res.status(400).json(erro);
-            }
-            else {
-                res.status(200).json(resultados);
-            }
-        });
+    altera(id, valores) {
+        return repositorio.altera(id, valores)
     }
 
-    exclui(id, res) {
-        const sql = 'DELETE FROM atendimentos WHERE id=?';
-
-        conexao.query(sql, id, (erro, resultados) => {
-            if (erro) {
-                res.status(400).json(erro);
-            }
-            else {
-                res.status(200).json({ id });
-            }
-        });
+    exclui(id) {
+        return repositorio.exclui(id)
     }
 
 }

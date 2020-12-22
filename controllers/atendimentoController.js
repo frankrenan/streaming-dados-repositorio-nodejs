@@ -38,16 +38,18 @@ module.exports = app => {
     });
 
     app.patch('/atendimentos/:id', (req, res) => {
-        const id = parseInt(req.params.id);
-
-        const valores = req.body;
-
-        Atendimento.altera(id, valores, res);
+        const id = parseInt(req.params.id)
+        const valores = req.body
+        Atendimento.altera(id, valores)
+            .then(resultado => res.status(200).json(resultado))
+            .catch(erros => res.status(400).json(erros))
     });
 
     app.delete('/atendimentos/:id', (req, res) => {
         const id = parseInt(req.params.id);
 
-        Atendimento.exclui(id, res);
+        Atendimento.exclui(id)
+            .then(resultado => res.status(200).json(resultado))
+            .catch(erros => res.status(400).json(erros))
     });
 }
