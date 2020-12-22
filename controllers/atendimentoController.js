@@ -1,3 +1,4 @@
+const axios = require('axios');
 const Atendimento = require('../model/antedimento');
 
 
@@ -9,9 +10,21 @@ module.exports = app => {
     });
 
     app.get('/atendimentos/:id', (req, res) => {
-        const id = parseInt(req.params.id);
 
-        Atendimento.buscaId(id, res);
+        const id = req.params.id;
+        Atendimento.buscaId(id)
+            .then( async (resultado) => {
+                const atendimento = resultado[0];
+                const cpf = atendimento.cliente;
+
+                const { data } = await axios.get(`http://localhost:8082/${cpf}`);
+
+                atendimento.cliente = data;
+
+                res.status(200).json(atendimento);    
+            })
+            .catch(erros => res.status(400).json(erros)) 
+
     });
 
     app.post('/atendimentos', (req, res) => {

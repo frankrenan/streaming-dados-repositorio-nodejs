@@ -1,4 +1,3 @@
-const { query } = require('express')
 const conexao = require('./conexao')
 
 const executaQuery = (query, parametros = '') => {

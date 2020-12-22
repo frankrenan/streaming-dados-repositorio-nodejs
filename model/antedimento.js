@@ -7,15 +7,18 @@ class Atendimento {
 
     constructor() {
 
-        this.dataEhValida = ({ data, dataCriacao }) => moment(data).isSameOrAfter(dataCriacao);
-        this.clienteEhValido = (tamanho) => tamanho => 5;
+        this.dataEhValida = ({ data, dataCriacao }) =>
+            moment(data).isSameOrAfter(dataCriacao)
 
-        this.valida = parametros => this.validacoes.filter(campo => {
-            const {nome} = campo;
-            const parametros = parametros[nome];
+        this.clienteEhValido = tamanho => tamanho >= 5;
 
-            return !campo.valido(parametros);
-        })  
+        this.valida = parametros =>
+            this.validacoes.filter(campo => {
+                const { nome } = campo
+                const parametro = parametros[nome]
+
+                return !campo.valido(parametro)
+            })
 
         this.validacoes = [
             {
@@ -42,7 +45,7 @@ class Atendimento {
             cliente: { tamanho: atendimento.cliente.length }
         }
 
-        const erros = this.valida(parametros);
+        const erros = this.valida(parametros)
         const existemErros = erros.length;
 
         if (existemErros) {
@@ -52,9 +55,9 @@ class Atendimento {
             const atendimentoDatado = { ...atendimento, dataCriacao, data }
 
             return repositorio.adiciona(atendimentoDatado)
-                .then((resultados) => {
+                .then(resultados => {
                     const id = resultados.insertId
-                    return ({ ...atendimento, id })
+                    return { ...atendimento, id }
                 })
         }
 
@@ -64,26 +67,8 @@ class Atendimento {
         return repositorio.lista();
     }
 
-    buscaId(id, res) {
-        const sql = `SELECT * FROM atendimentos WHERE id = ${id}`;
-
-
-
-        conexao.query(sql, async (erro, resultados) => {
-            const atendimento = resultados[0];
-            const cpf = atendimento.cliente;
-
-            if (erro) {
-                res.status(400).json(erro);
-            }
-            else {
-                const { data } = await axios.get(`http://localhost:8082/${cpf}`);
-
-                atendimento.cliente = data;
-
-                res.status(200).json(atendimento);
-            }
-        });
+    buscaId(id) {
+        return repositorio.buscaId(id);
     }
 
     altera(id, valores, res) {

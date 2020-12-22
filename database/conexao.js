@@ -5,14 +5,14 @@ frank
 8155057renan
 
 root
-8r1t5l5
+f8r1t5l5
 */
 
 const conexao = mysql.createConnection({
     host: 'localhost',
     port: 3306,
-    user: 'frank',
-    password: '8155057renan',
+    user: 'root',
+    password: 'f8r1t5l5',
     database: 'agenda'
 });
 

@@ -1,9 +1,10 @@
 const query = require('../database/queries')
 
-class Atendimento{
-    adiciona(atendimento){
+class Atendimento {
+    adiciona(atendimento) {
         const sql = 'INSERT INTO atendimentos SET ?';
-        return query(sql, atendimento)
+
+        return query(sql, atendimento);
 
     }
 
@@ -11,6 +12,12 @@ class Atendimento{
         const sql = 'SELECT * from atendimentos';
 
         return query(sql);
+    }
+
+    buscaId(id) {
+        const sql = `SELECT * FROM atendimentos WHERE id = ${id}`;
+
+        return query(sql, id);
     }
 }
 
